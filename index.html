@@ -79,4 +79,105 @@
     <div class="stars-container" id="starsContainer"></div>
     <div class="messages-container" id="messagesContainer"></div>
 
-    <!-- repr
+    <!-- reproductor de música -->
+    <audio id="musicPlayer" loop>
+        <source src="cancion.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- control música -->
+    <div class="music-control" id="musicControl" onclick="toggleMusic()">
+        <span id="musicIcon">🔊</span>
+    </div>
+
+    <!-- botón inicio para móviles -->
+    <div class="start-button" id="startButton" onclick="startExperience()">
+        <div class="start-content">
+            <span style="font-size:48px; margin-bottom:10px;">🎉</span>
+            <p style="font-size:20px; font-weight:500;">¡Feliz Cumpleaños!</p>
+            <p style="font-size:14px; opacity:0.8;">Toca para comenzar</p>
+        </div>
+    </div>
+
+    <script>
+        const messages = [
+            {text:"Eres inteligente! 🤩",position:"pos-1"},
+            {text:"Hoy celebramos a una persona increíble 🥳🌟",position:"pos-2"},
+            {text:"Gracias por existir y hacer todo mejor 💕🌈",position:"pos-3"},
+            {text:"Un año más siendo extraordinaria 🎂🔥",position:"pos-4"},
+            {text:"¡Brilla siempre, persona maravillosa! 🌟💫",position:"pos-5"},
+            {text:"Que la vida te regale tanta felicidad como la que das 🎁😊",position:"pos-6"},
+            {text:"Hoy el mundo celebra tu sonrisa 😄🎉",position:"pos-7"},
+            {text:"¡Que todos tus sueños se hagan realidad! 🌠💗",position:"pos-8"},
+            {text:"¡Que este nuevo año de vida te llene de magia! 🎉🌟",position:"pos-9"},
+            {text:"Hoy el protagonista eres tú 🎉👑",position:"pos-10"},
+            {text:"Que tu mente creativa nunca deje de volar 🚀✨",position:"pos-11"},
+            {text:"Que el universo conspire a tu favor, alma acuariana 🌌💫",position:"pos-12"},
+            {text:"Que tus sueños innovadores se hagan realidad 🌠♒",position:"pos-1"}
+        ];
+
+        const container = document.getElementById('messagesContainer');
+        const starsContainer = document.getElementById('starsContainer');
+        let currentSet = 0;
+        const messagesPerSet = 4;
+        let messageElements = [];
+
+        // Crear estrellas y destellos
+        function createStars(){
+            const numStars=30; const numSparkles=40;
+            for(let i=0;i<numStars;i++){
+                const star=document.createElement('div'); star.className='star';
+                star.style.left=Math.random()*100+'%'; star.style.top=Math.random()*100+'%';
+                star.style.setProperty('--duration',(2+Math.random()*3)+'s');
+                star.style.setProperty('--delay',Math.random()*5+'s');
+                starsContainer.appendChild(star);
+            }
+            for(let i=0;i<numSparkles;i++){
+                const sparkle=document.createElement('div'); sparkle.className='sparkle';
+                sparkle.style.left=Math.random()*100+'%'; sparkle.style.top=Math.random()*100+'%';
+                sparkle.style.setProperty('--duration',(3+Math.random()*4)+'s');
+                sparkle.style.setProperty('--delay',Math.random()*6+'s');
+                starsContainer.appendChild(sparkle);
+            }
+        }
+        createStars();
+
+        messages.forEach((msg,index)=>{
+            const messageDiv=document.createElement('div');
+            messageDiv.className=`whatsapp-message ${msg.position}`;
+            const now=new Date();
+            const hours=String(now.getHours()).padStart(2,'0');
+            const minutes=String(now.getMinutes()).padStart(2,'0');
+            messageDiv.innerHTML=`${msg.text}<div class="time">${hours}:${minutes}</div>`;
+            container.appendChild(messageDiv);
+            messageElements.push(messageDiv);
+        });
+
+        function showMessages(){
+            messageElements.forEach(el=>el.classList.remove('show'));
+            const startIndex=currentSet*messagesPerSet;
+            for(let i=0;i<messagesPerSet;i++){
+                const index=(startIndex+i)%messages.length;
+                setTimeout(()=>{messageElements[index].classList.add('show');},i*200);
+            }
+            currentSet=(currentSet+1)%Math.ceil(messages.length/messagesPerSet);
+        }
+        showMessages();
+        setInterval(showMessages,5000);
+
+        // Música
+        const musicPlayer=document.getElementById('musicPlayer'); let musicPlaying=false;
+        function startExperience(){
+            document.getElementById('startButton').classList.add('hidden');
+            musicPlayer.play().then(()=>{musicPlaying=true;}).catch(err=>{console.log(err);});
+        }
+        function toggleMusic(){
+            const icon=document.getElementById('musicIcon');
+            if(musicPlaying){
+                musicPlayer.pause(); icon.textContent='🔇'; musicPlaying=false;
+            }else{
+                musicPlayer.play().then(()=>{icon.textContent='🔊'; musicPlaying=true;}).catch(err=>{console.log(err);});
+            }
+        }
+    </script>
+</body>
+</html>
