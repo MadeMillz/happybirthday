@@ -1,221 +1,82 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Feliz Cumpleaños Lau</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>felicidadesmorochita</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Roboto',sans-serif; overflow:hidden; height:100vh; position:relative; }
 
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+        .background {
+            position: fixed; top:0; left:0; width:100%; height:100%;
+            background-image: url('https://i.postimg.cc/qRWtBJGG/The-Barnyard-Rick-Collins.jpg');
+            background-size: cover; background-position: center; background-repeat:no-repeat; z-index:1;
+        }
 
-<style>
-*{margin:0;padding:0;box-sizing:border-box;}
+        .overlay { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.3); z-index:2; }
 
-body{
-    font-family:'Roboto',sans-serif;
-    overflow:hidden;
-    height:100vh;
-}
+        .stars-container { position:fixed; top:0; left:0; width:100%; height:100%; z-index:3; pointer-events:none; overflow:hidden; }
+        .star { position:absolute; width:4px; height:4px; background:white; border-radius:50%; box-shadow:0 0 6px rgba(255,255,255,0.8),0 0 12px rgba(255,255,255,0.5);
+            animation:twinkle var(--duration) ease-in-out infinite; animation-delay: var(--delay); }
+        .star::before, .star::after {
+            content:''; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%);
+            width:12px; height:1px; background:linear-gradient(90deg, transparent, white, transparent); opacity:0.6;
+        }
+        .star::after { transform:translate(-50%, -50%) rotate(90deg); }
 
-.background{
-    position:fixed;
-    width:100%;
-    height:100%;
-    background:url('https://i.postimg.cc/qRWtBJGG/The-Barnyard-Rick-Collins.jpg') center/cover no-repeat;
-    z-index:1;
-}
+        @keyframes twinkle { 0%,100%{opacity:0; transform:scale(0);} 50%{opacity:1; transform:scale(1);} }
 
-.overlay{
-    position:fixed;
-    width:100%;
-    height:100%;
-    background:rgba(0,0,0,0.3);
-    z-index:2;
-}
+        .sparkle {
+            position:absolute; width:3px; height:3px; background:radial-gradient(circle, #fff,#ffe5b4,transparent);
+            border-radius:50%; animation:sparkleFloat var(--duration) ease-in-out infinite; animation-delay:var(--delay); opacity:0;
+        }
+        @keyframes sparkleFloat { 0%{opacity:0; transform:translateY(0) scale(0);} 50%{opacity:1; transform:translateY(-30px) scale(1.5);} 100%{opacity:0; transform:translateY(-60px) scale(0);} }
 
-.messages-container{
-    position:fixed;
-    width:100%;
-    height:100%;
-    z-index:10;
-    padding:20px;
-}
+        .messages-container { position:fixed; top:0; left:0; width:100%; height:100%; z-index:10; padding:20px; }
+        .whatsapp-message {
+            position:absolute; max-width:280px; padding:12px 16px; background:#fff; border:2px solid rgba(0,0,0,0.1);
+            border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.25); font-size:15px; line-height:1.5; color:#303030;
+            opacity:0; transform:scale(0.8) translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; font-weight:400;
+        }
+        .whatsapp-message::before { content:''; position:absolute; bottom:0; right:-8px; width:0; height:0; border-left:10px solid #fff; border-bottom:10px solid transparent; filter:drop-shadow(2px 0 0 rgba(0,0,0,0.1)); }
+        .whatsapp-message.show { opacity:1; transform:scale(1) translateY(0); animation:pulse 2s ease-in-out infinite; }
+        @keyframes pulse {0%,100%{transform:scale(1);}50%{transform:scale(1.02);}}
 
-.whatsapp-message{
-    position:absolute;
-    max-width:260px;
-    padding:12px 16px;
-    background:#fff;
-    border-radius:12px;
-    box-shadow:0 4px 12px rgba(0,0,0,.25);
-    font-size:14px;
-    opacity:0;
-    transform:scale(.8) translateY(20px);
-    transition:.5s;
-}
+        /* posiciones de los mensajes */
+        .pos-1{top:15%; left:10%;} .pos-2{top:25%; right:15%;} .pos-3{top:45%; left:8%;} .pos-4{top:60%; right:12%;}
+        .pos-5{top:75%; left:15%;} .pos-6{top:35%; left:50%; transform:translateX(-50%) scale(0.8) translateY(20px);} .pos-7{top:20%; left:35%;}
+        .pos-8{top:55%; right:25%;} .pos-9{top:10%; right:35%;} .pos-10{top:70%; left:40%;} .pos-11{top:40%; right:8%;} .pos-12{top:85%; right:30%;}
+        .pos-6.show {transform:translateX(-50%) scale(1) translateY(0);}
 
-.whatsapp-message.show{
-    opacity:1;
-    transform:scale(1) translateY(0);
-}
+        /* música */
+        .music-control { position:fixed; bottom:30px; right:30px; width:60px; height:60px; background:rgba(255,255,255,0.95); border:2px solid rgba(0,0,0,0.1);
+            border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:1000; box-shadow:0 4px 15px rgba(0,0,0,0.2); transition: all 0.3s ease;}
+        .music-control:hover{transform:scale(1.1); box-shadow:0 6px 20px rgba(0,0,0,0.3);}
+        .music-control span{font-size:28px;}
 
-.time{
-    font-size:10px;
-    text-align:right;
-    margin-top:4px;
-    color:#667781;
-}
+        /* botón inicio */
+        .start-button {
+            position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); backdrop-filter:blur(10px);
+            display:flex; align-items:center; justify-content:center; z-index:10000; cursor:pointer; transition:opacity 0.5s ease;
+        }
+        .start-button.hidden {opacity:0; pointer-events:none;}
+        .start-content {background:white; padding:40px 60px; border-radius:20px; text-align:center; box-shadow:0 10px 40px rgba(0,0,0,0.3);}
+        .start-content p{margin:0; color:#303030;}
 
-/* posiciones */
-.pos-1{top:15%;left:10%;}
-.pos-2{top:25%;right:10%;}
-.pos-3{top:45%;left:8%;}
-.pos-4{top:60%;right:12%;}
-.pos-5{top:75%;left:15%;}
-.pos-6{top:35%;left:50%;transform:translateX(-50%);}
-.pos-7{top:20%;left:35%;}
-.pos-8{top:55%;right:25%;}
-
-/* botón música */
-.music-control{
-    position:fixed;
-    bottom:30px;
-    right:30px;
-    width:60px;
-    height:60px;
-    background:#fff;
-    border-radius:50%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:28px;
-    cursor:pointer;
-    z-index:1000;
-}
-
-/* pantalla inicio */
-.start-button{
-    position:fixed;
-    width:100%;
-    height:100%;
-    background:rgba(0,0,0,.8);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    z-index:2000;
-    cursor:pointer;
-    transition:.5s;
-}
-
-.start-button.hidden{
-    opacity:0;
-    pointer-events:none;
-}
-
-.start-content{
-    background:white;
-    padding:40px 60px;
-    border-radius:20px;
-    text-align:center;
-}
-</style>
+        @media(max-width:768px){
+            .whatsapp-message{max-width:220px; padding:10px 14px; font-size:13px;}
+            .music-control{width:50px;height:50px; bottom:20px; right:20px;}
+            .music-control span{font-size:24px;}
+            .start-content{padding:30px 40px;}
+        }
+    </style>
 </head>
-
 <body>
+    <div class="background"></div>
+    <div class="overlay"></div>
+    <div class="stars-container" id="starsContainer"></div>
+    <div class="messages-container" id="messagesContainer"></div>
 
-<div class="background"></div>
-<div class="overlay"></div>
-<div class="messages-container" id="messagesContainer"></div>
-
-<!-- YouTube oculto -->
-<div style="position:absolute;width:0;height:0;overflow:hidden;">
-    <iframe 
-        id="youtubePlayer"
-        width="0"
-        height="0"
-        src=""
-        frameborder="0"
-        allow="autoplay"
-        allowfullscreen>
-    </iframe>
-</div>
-
-<div class="music-control" onclick="toggleMusic()">
-    <span id="musicIcon">🔊</span>
-</div>
-
-<div class="start-button" id="startButton" onclick="startExperience()">
-    <div class="start-content">
-        <div style="font-size:48px;">🎉</div>
-        <p style="font-size:20px;font-weight:500;">¡Feliz Cumpleaños!</p>
-        <p style="font-size:14px;opacity:.7;">Toca para comenzar</p>
-    </div>
-</div>
-
-<script>
-const messages=[
-{text:"Eres increíble 🤩",position:"pos-1"},
-{text:"Hoy celebramos tu vida 🥳🌟",position:"pos-2"},
-{text:"Gracias por existir 💕",position:"pos-3"},
-{text:"Un año más siendo extraordinaria 🎂🔥",position:"pos-4"},
-{text:"Brilla siempre ✨",position:"pos-5"},
-{text:"Que todos tus sueños se cumplan 🌠",position:"pos-6"},
-{text:"Hoy el mundo sonríe contigo 😄",position:"pos-7"},
-{text:"Feliz cumpleaños 🎉💖",position:"pos-8"}
-];
-
-const container=document.getElementById("messagesContainer");
-let currentSet=0;
-const perSet=4;
-let elements=[];
-
-messages.forEach(msg=>{
-    const div=document.createElement("div");
-    div.className="whatsapp-message "+msg.position;
-    const now=new Date();
-    div.innerHTML=msg.text+"<div class='time'>"+now.getHours()+":"+String(now.getMinutes()).padStart(2,"0")+"</div>";
-    container.appendChild(div);
-    elements.push(div);
-});
-
-function showMessages(){
-    elements.forEach(el=>el.classList.remove("show"));
-    const start=currentSet*perSet;
-    for(let i=0;i<perSet;i++){
-        const index=(start+i)%elements.length;
-        setTimeout(()=>elements[index].classList.add("show"),i*200);
-    }
-    currentSet=(currentSet+1)%Math.ceil(elements.length/perSet);
-}
-
-showMessages();
-setInterval(showMessages,5000);
-
-/* 🎵 Música */
-let musicPlaying=false;
-const videoID="2usSHG_oGXM";
-
-function startExperience(){
-    document.getElementById("startButton").classList.add("hidden");
-    const iframe=document.getElementById("youtubePlayer");
-    iframe.src=`https://www.youtube.com/embed/${videoID}?autoplay=1&loop=1&playlist=${videoID}&controls=0`;
-    musicPlaying=true;
-}
-
-function toggleMusic(){
-    const iframe=document.getElementById("youtubePlayer");
-    const icon=document.getElementById("musicIcon");
-
-    if(musicPlaying){
-        iframe.src="";
-        icon.textContent="🔇";
-        musicPlaying=false;
-    }else{
-        iframe.src=`https://www.youtube.com/embed/${videoID}?autoplay=1&loop=1&playlist=${videoID}&controls=0`;
-        icon.textContent="🔊";
-        musicPlaying=true;
-    }
-}
-</script>
-
-</body>
-</html>
+    <!-- repr
