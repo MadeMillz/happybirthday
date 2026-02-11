@@ -1,183 +1,165 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>felicidadesmorochita</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
-    <style>
-        * { margin:0; padding:0; box-sizing:border-box; }
-        body { font-family:'Roboto',sans-serif; overflow:hidden; height:100vh; position:relative; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>felicidadesmorochita</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Roboto',sans-serif; overflow:hidden; height:100vh; position:relative; }
 
-        .background {
-            position: fixed; top:0; left:0; width:100%; height:100%;
-            background-image: url('https://i.postimg.cc/qRWtBJGG/The-Barnyard-Rick-Collins.jpg');
-            background-size: cover; background-position: center; background-repeat:no-repeat; z-index:1;
-        }
+.background { position: fixed; top:0; left:0; width:100%; height:100%;
+  background-image: url('https://i.postimg.cc/qRWtBJGG/The-Barnyard-Rick-Collins.jpg');
+  background-size: cover; background-position:center; background-repeat:no-repeat; z-index:1; }
 
-        .overlay { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.3); z-index:2; }
+.overlay { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.3); z-index:2; }
 
-        .stars-container { position:fixed; top:0; left:0; width:100%; height:100%; z-index:3; pointer-events:none; overflow:hidden; }
-        .star { position:absolute; width:4px; height:4px; background:white; border-radius:50%; box-shadow:0 0 6px rgba(255,255,255,0.8),0 0 12px rgba(255,255,255,0.5);
-            animation:twinkle var(--duration) ease-in-out infinite; animation-delay: var(--delay); }
-        .star::before, .star::after {
-            content:''; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%);
-            width:12px; height:1px; background:linear-gradient(90deg, transparent, white, transparent); opacity:0.6;
-        }
-        .star::after { transform:translate(-50%, -50%) rotate(90deg); }
+.stars-container { position:fixed; top:0; left:0; width:100%; height:100%; z-index:3; pointer-events:none; overflow:hidden; }
+.star { position:absolute; width:4px; height:4px; background:white; border-radius:50%; box-shadow:0 0 6px rgba(255,255,255,0.8),0 0 12px rgba(255,255,255,0.5);
+  animation:twinkle var(--duration) ease-in-out infinite; animation-delay: var(--delay);}
+.star::before, .star::after { content:''; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+  width:12px; height:1px; background:linear-gradient(90deg, transparent, white, transparent); opacity:0.6; }
+.star::after { transform:translate(-50%,-50%) rotate(90deg); }
 
-        @keyframes twinkle { 0%,100%{opacity:0; transform:scale(0);} 50%{opacity:1; transform:scale(1);} }
+@keyframes twinkle { 0%,100%{opacity:0; transform:scale(0);} 50%{opacity:1; transform:scale(1);} }
 
-        .sparkle {
-            position:absolute; width:3px; height:3px; background:radial-gradient(circle, #fff,#ffe5b4,transparent);
-            border-radius:50%; animation:sparkleFloat var(--duration) ease-in-out infinite; animation-delay:var(--delay); opacity:0;
-        }
-        @keyframes sparkleFloat { 0%{opacity:0; transform:translateY(0) scale(0);} 50%{opacity:1; transform:translateY(-30px) scale(1.5);} 100%{opacity:0; transform:translateY(-60px) scale(0);} }
+.sparkle { position:absolute; width:3px; height:3px; background:radial-gradient(circle, #fff,#ffe5b4,transparent);
+  border-radius:50%; animation:sparkleFloat var(--duration) ease-in-out infinite; animation-delay:var(--delay); opacity:0;}
+@keyframes sparkleFloat { 0%{opacity:0; transform:translateY(0) scale(0);} 50%{opacity:1; transform:translateY(-30px) scale(1.5);} 100%{opacity:0; transform:translateY(-60px) scale(0);} }
 
-        .messages-container { position:fixed; top:0; left:0; width:100%; height:100%; z-index:10; padding:20px; }
-        .whatsapp-message {
-            position:absolute; max-width:280px; padding:12px 16px; background:#fff; border:2px solid rgba(0,0,0,0.1);
-            border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.25); font-size:15px; line-height:1.5; color:#303030;
-            opacity:0; transform:scale(0.8) translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; font-weight:400;
-        }
-        .whatsapp-message::before { content:''; position:absolute; bottom:0; right:-8px; width:0; height:0; border-left:10px solid #fff; border-bottom:10px solid transparent; filter:drop-shadow(2px 0 0 rgba(0,0,0,0.1)); }
-        .whatsapp-message.show { opacity:1; transform:scale(1) translateY(0); animation:pulse 2s ease-in-out infinite; }
-        @keyframes pulse {0%,100%{transform:scale(1);}50%{transform:scale(1.02);}}
+.messages-container { position:fixed; top:0; left:0; width:100%; height:100%; z-index:10; padding:20px; }
+.whatsapp-message {
+  position:absolute; max-width:280px; padding:12px 16px; background:#fff; border:2px solid rgba(0,0,0,0.1);
+  border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.25); font-size:15px; line-height:1.5; color:#303030;
+  opacity:0; transform:scale(0.8) translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; font-weight:400;
+}
+.whatsapp-message::before { content:''; position:absolute; bottom:0; right:-8px; width:0; height:0; border-left:10px solid #fff; border-bottom:10px solid transparent; filter:drop-shadow(2px 0 0 rgba(0,0,0,0.1)); }
+.whatsapp-message.show { opacity:1; transform:scale(1) translateY(0); animation:pulse 2s ease-in-out infinite; }
+@keyframes pulse {0%,100%{transform:scale(1);}50%{transform:scale(1.02);}}
 
-        /* posiciones de los mensajes */
-        .pos-1{top:15%; left:10%;} .pos-2{top:25%; right:15%;} .pos-3{top:45%; left:8%;} .pos-4{top:60%; right:12%;}
-        .pos-5{top:75%; left:15%;} .pos-6{top:35%; left:50%; transform:translateX(-50%) scale(0.8) translateY(20px);} .pos-7{top:20%; left:35%;}
-        .pos-8{top:55%; right:25%;} .pos-9{top:10%; right:35%;} .pos-10{top:70%; left:40%;} .pos-11{top:40%; right:8%;} .pos-12{top:85%; right:30%;}
-        .pos-6.show {transform:translateX(-50%) scale(1) translateY(0);}
+.pos-1{top:15%; left:10%;} .pos-2{top:25%; right:15%;} .pos-3{top:45%; left:8%;} .pos-4{top:60%; right:12%;}
+.pos-5{top:75%; left:15%;} .pos-6{top:35%; left:50%; transform:translateX(-50%) scale(0.8) translateY(20px);} .pos-7{top:20%; left:35%;}
+.pos-8{top:55%; right:25%;} .pos-9{top:10%; right:35%;} .pos-10{top:70%; left:40%;} .pos-11{top:40%; right:8%;} .pos-12{top:85%; right:30%;}
+.pos-6.show {transform:translateX(-50%) scale(1) translateY(0);}
 
-        /* música */
-        .music-control { position:fixed; bottom:30px; right:30px; width:60px; height:60px; background:rgba(255,255,255,0.95); border:2px solid rgba(0,0,0,0.1);
-            border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:1000; box-shadow:0 4px 15px rgba(0,0,0,0.2); transition: all 0.3s ease;}
-        .music-control:hover{transform:scale(1.1); box-shadow:0 6px 20px rgba(0,0,0,0.3);}
-        .music-control span{font-size:28px;}
+.music-control { position:fixed; bottom:30px; right:30px; width:60px; height:60px; background:rgba(255,255,255,0.95); border:2px solid rgba(0,0,0,0.1);
+  border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:1000; box-shadow:0 4px 15px rgba(0,0,0,0.2); transition: all 0.3s ease;}
+.music-control:hover{transform:scale(1.1); box-shadow:0 6px 20px rgba(0,0,0,0.3);}
+.music-control span{font-size:28px;}
 
-        /* botón inicio */
-        .start-button {
-            position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); backdrop-filter:blur(10px);
-            display:flex; align-items:center; justify-content:center; z-index:10000; cursor:pointer; transition:opacity 0.5s ease;
-        }
-        .start-button.hidden {opacity:0; pointer-events:none;}
-        .start-content {background:white; padding:40px 60px; border-radius:20px; text-align:center; box-shadow:0 10px 40px rgba(0,0,0,0.3);}
-        .start-content p{margin:0; color:#303030;}
+.start-button { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); backdrop-filter:blur(10px);
+  display:flex; align-items:center; justify-content:center; z-index:10000; cursor:pointer; transition:opacity 0.5s ease;}
+.start-button.hidden {opacity:0; pointer-events:none;}
+.start-content {background:white; padding:40px 60px; border-radius:20px; text-align:center; box-shadow:0 10px 40px rgba(0,0,0,0.3);}
+.start-content p{margin:0; color:#303030;}
 
-        @media(max-width:768px){
-            .whatsapp-message{max-width:220px; padding:10px 14px; font-size:13px;}
-            .music-control{width:50px;height:50px; bottom:20px; right:20px;}
-            .music-control span{font-size:24px;}
-            .start-content{padding:30px 40px;}
-        }
-    </style>
+@media(max-width:768px){
+    .whatsapp-message{max-width:220px; padding:10px 14px; font-size:13px;}
+    .music-control{width:50px;height:50px; bottom:20px; right:20px;}
+    .music-control span{font-size:24px;}
+    .start-content{padding:30px 40px;}
+}
+</style>
 </head>
 <body>
-    <div class="background"></div>
-    <div class="overlay"></div>
-    <div class="stars-container" id="starsContainer"></div>
-    <div class="messages-container" id="messagesContainer"></div>
+<div class="background"></div>
+<div class="overlay"></div>
+<div class="stars-container" id="starsContainer"></div>
+<div class="messages-container" id="messagesContainer"></div>
 
-    <!-- reproductor de música -->
-    <audio id="musicPlayer" loop>
-        <source src="cancion.mp3" type="audio/mpeg">
-    </audio>
+<audio id="musicPlayer" loop>
+    <source src="pushainas.mp3" type="audio/mpeg">
+</audio>
 
-    <!-- control música -->
-    <div class="music-control" id="musicControl" onclick="toggleMusic()">
-        <span id="musicIcon">🔊</span>
+<div class="music-control" id="musicControl" onclick="toggleMusic()">
+    <span id="musicIcon">🔊</span>
+</div>
+
+<div class="start-button" id="startButton" onclick="startExperience()">
+    <div class="start-content">
+        <span style="font-size:48px; margin-bottom:10px;">🎉</span>
+        <p style="font-size:20px; font-weight:500;">¡Feliz Cumpleaños!</p>
+        <p style="font-size:14px; opacity:0.8;">Toca para comenzar</p>
     </div>
+</div>
 
-    <!-- botón inicio para móviles -->
-    <div class="start-button" id="startButton" onclick="startExperience()">
-        <div class="start-content">
-            <span style="font-size:48px; margin-bottom:10px;">🎉</span>
-            <p style="font-size:20px; font-weight:500;">¡Feliz Cumpleaños!</p>
-            <p style="font-size:14px; opacity:0.8;">Toca para comenzar</p>
-        </div>
-    </div>
+<script>
+const messages = [
+{text:"Eres inteligente! 🤩",position:"pos-1"},
+{text:"Hoy celebramos a una persona increíble 🥳🌟",position:"pos-2"},
+{text:"Gracias por existir y hacer todo mejor 💕🌈",position:"pos-3"},
+{text:"Un año más siendo extraordinaria 🎂🔥",position:"pos-4"},
+{text:"¡Brilla siempre, persona maravillosa! 🌟💫",position:"pos-5"},
+{text:"Que la vida te regale tanta felicidad como la que das 🎁😊",position:"pos-6"},
+{text:"Hoy el mundo celebra tu sonrisa 😄🎉",position:"pos-7"},
+{text:"¡Que todos tus sueños se hagan realidad! 🌠💗",position:"pos-8"},
+{text:"¡Que este nuevo año de vida te llene de magia! 🎉🌟",position:"pos-9"},
+{text:"Hoy el protagonista eres tú 🎉👑",position:"pos-10"},
+{text:"Que tu mente creativa nunca deje de volar 🚀✨",position:"pos-11"},
+{text:"Que el universo conspire a tu favor, alma acuariana 🌌💫",position:"pos-12"},
+{text:"Que tus sueños innovadores se hagan realidad 🌠♒",position:"pos-1"}
+];
 
-    <script>
-        const messages = [
-            {text:"Eres inteligente! 🤩",position:"pos-1"},
-            {text:"Hoy celebramos a una persona increíble 🥳🌟",position:"pos-2"},
-            {text:"Gracias por existir y hacer todo mejor 💕🌈",position:"pos-3"},
-            {text:"Un año más siendo extraordinaria 🎂🔥",position:"pos-4"},
-            {text:"¡Brilla siempre, persona maravillosa! 🌟💫",position:"pos-5"},
-            {text:"Que la vida te regale tanta felicidad como la que das 🎁😊",position:"pos-6"},
-            {text:"Hoy el mundo celebra tu sonrisa 😄🎉",position:"pos-7"},
-            {text:"¡Que todos tus sueños se hagan realidad! 🌠💗",position:"pos-8"},
-            {text:"¡Que este nuevo año de vida te llene de magia! 🎉🌟",position:"pos-9"},
-            {text:"Hoy el protagonista eres tú 🎉👑",position:"pos-10"},
-            {text:"Que tu mente creativa nunca deje de volar 🚀✨",position:"pos-11"},
-            {text:"Que el universo conspire a tu favor, alma acuariana 🌌💫",position:"pos-12"},
-            {text:"Que tus sueños innovadores se hagan realidad 🌠♒",position:"pos-1"}
-        ];
+const container = document.getElementById('messagesContainer');
+const starsContainer = document.getElementById('starsContainer');
+let currentSet=0;
+const messagesPerSet=4;
+let messageElements=[];
 
-        const container = document.getElementById('messagesContainer');
-        const starsContainer = document.getElementById('starsContainer');
-        let currentSet = 0;
-        const messagesPerSet = 4;
-        let messageElements = [];
+function createStars(){
+    for(let i=0;i<30;i++){
+        const star=document.createElement('div'); star.className='star';
+        star.style.left=Math.random()*100+'%'; star.style.top=Math.random()*100+'%';
+        star.style.setProperty('--duration',(2+Math.random()*3)+'s');
+        star.style.setProperty('--delay',Math.random()*5+'s');
+        starsContainer.appendChild(star);
+    }
+    for(let i=0;i<40;i++){
+        const sparkle=document.createElement('div'); sparkle.className='sparkle';
+        sparkle.style.left=Math.random()*100+'%'; sparkle.style.top=Math.random()*100+'%';
+        sparkle.style.setProperty('--duration',(3+Math.random()*4)+'s');
+        sparkle.style.setProperty('--delay',Math.random()*6+'s');
+        starsContainer.appendChild(sparkle);
+    }
+}
+createStars();
 
-        // Crear estrellas y destellos
-        function createStars(){
-            const numStars=30; const numSparkles=40;
-            for(let i=0;i<numStars;i++){
-                const star=document.createElement('div'); star.className='star';
-                star.style.left=Math.random()*100+'%'; star.style.top=Math.random()*100+'%';
-                star.style.setProperty('--duration',(2+Math.random()*3)+'s');
-                star.style.setProperty('--delay',Math.random()*5+'s');
-                starsContainer.appendChild(star);
-            }
-            for(let i=0;i<numSparkles;i++){
-                const sparkle=document.createElement('div'); sparkle.className='sparkle';
-                sparkle.style.left=Math.random()*100+'%'; sparkle.style.top=Math.random()*100+'%';
-                sparkle.style.setProperty('--duration',(3+Math.random()*4)+'s');
-                sparkle.style.setProperty('--delay',Math.random()*6+'s');
-                starsContainer.appendChild(sparkle);
-            }
-        }
-        createStars();
+messages.forEach((msg)=>{
+    const messageDiv=document.createElement('div');
+    messageDiv.className=`whatsapp-message ${msg.position}`;
+    const now=new Date();
+    const hours=String(now.getHours()).padStart(2,'0');
+    const minutes=String(now.getMinutes()).padStart(2,'0');
+    messageDiv.innerHTML=`${msg.text}<div class="time">${hours}:${minutes}</div>`;
+    container.appendChild(messageDiv);
+    messageElements.push(messageDiv);
+});
 
-        messages.forEach((msg,index)=>{
-            const messageDiv=document.createElement('div');
-            messageDiv.className=`whatsapp-message ${msg.position}`;
-            const now=new Date();
-            const hours=String(now.getHours()).padStart(2,'0');
-            const minutes=String(now.getMinutes()).padStart(2,'0');
-            messageDiv.innerHTML=`${msg.text}<div class="time">${hours}:${minutes}</div>`;
-            container.appendChild(messageDiv);
-            messageElements.push(messageDiv);
-        });
+function showMessages(){
+    messageElements.forEach(el=>el.classList.remove('show'));
+    const startIndex=currentSet*messagesPerSet;
+    for(let i=0;i<messagesPerSet;i++){
+        const index=(startIndex+i)%messages.length;
+        setTimeout(()=>{messageElements[index].classList.add('show');},i*200);
+    }
+    currentSet=(currentSet+1)%Math.ceil(messages.length/messagesPerSet);
+}
+showMessages();
+setInterval(showMessages,5000);
 
-        function showMessages(){
-            messageElements.forEach(el=>el.classList.remove('show'));
-            const startIndex=currentSet*messagesPerSet;
-            for(let i=0;i<messagesPerSet;i++){
-                const index=(startIndex+i)%messages.length;
-                setTimeout(()=>{messageElements[index].classList.add('show');},i*200);
-            }
-            currentSet=(currentSet+1)%Math.ceil(messages.length/messagesPerSet);
-        }
-        showMessages();
-        setInterval(showMessages,5000);
+const musicPlayer=document.getElementById('musicPlayer'); let musicPlaying=false;
 
-        // Música
-        const musicPlayer=document.getElementById('musicPlayer'); let musicPlaying=false;
-        function startExperience(){
-            document.getElementById('startButton').classList.add('hidden');
-            musicPlayer.play().then(()=>{musicPlaying=true;}).catch(err=>{console.log(err);});
-        }
-        function toggleMusic(){
-            const icon=document.getElementById('musicIcon');
-            if(musicPlaying){
-                musicPlayer.pause(); icon.textContent='🔇'; musicPlaying=false;
-            }else{
-                musicPlayer.play().then(()=>{icon.textContent='🔊'; musicPlaying=true;}).catch(err=>{console.log(err);});
-            }
-        }
-    </script>
+function startExperience(){
+    document.getElementById('startButton').classList.add('hidden');
+    musicPlayer.play().then(()=>{musicPlaying=true;}).catch(err=>console.log(err));
+}
+
+function toggleMusic(){
+    const icon=document.getElementById('musicIcon');
+    if(musicPlaying){ musicPlayer.pause(); icon.textContent='🔇'; musicPlaying=false; }
+    else{ musicPlayer.play().then(()=>{icon.textContent='🔊'; musicPlaying=true;}).catch(err=>console.log(err)); }
+}
+</script>
 </body>
 </html>
