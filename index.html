@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feliz Cumpleaños Lau</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+    font-family:'Roboto',sans-serif;
+    overflow:hidden;
+    height:100vh;
+}
+
+.background{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:url('https://i.postimg.cc/qRWtBJGG/The-Barnyard-Rick-Collins.jpg') center/cover no-repeat;
+    z-index:1;
+}
+
+.overlay{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.3);
+    z-index:2;
+}
+
+.messages-container{
+    position:fixed;
+    width:100%;
+    height:100%;
+    z-index:10;
+    padding:20px;
+}
+
+.whatsapp-message{
+    position:absolute;
+    max-width:260px;
+    padding:12px 16px;
+    background:#fff;
+    border-radius:12px;
+    box-shadow:0 4px 12px rgba(0,0,0,.25);
+    font-size:14px;
+    opacity:0;
+    transform:scale(.8) translateY(20px);
+    transition:.5s;
+}
+
+.whatsapp-message.show{
+    opacity:1;
+    transform:scale(1) translateY(0);
+}
+
+.time{
+    font-size:10px;
+    text-align:right;
+    margin-top:4px;
+    color:#667781;
+}
+
+/* posiciones */
+.pos-1{top:15%;left:10%;}
+.pos-2{top:25%;right:10%;}
+.pos-3{top:45%;left:8%;}
+.pos-4{top:60%;right:12%;}
+.pos-5{top:75%;left:15%;}
+.pos-6{top:35%;left:50%;transform:translateX(-50%);}
+.pos-7{top:20%;left:35%;}
+.pos-8{top:55%;right:25%;}
+
+/* botón música */
+.music-control{
+    position:fixed;
+    bottom:30px;
+    right:30px;
+    width:60px;
+    height:60px;
+    background:#fff;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:28px;
+    cursor:pointer;
+    z-index:1000;
+}
+
+/* pantalla inicio */
+.start-button{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,.8);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:2000;
+    cursor:pointer;
+    transition:.5s;
+}
+
+.start-button.hidden{
+    opacity:0;
+    pointer-events:none;
+}
+
+.start-content{
+    background:white;
+    padding:40px 60px;
+    border-radius:20px;
+    text-align:center;
+}
+</style>
+</head>
+
+<body>
+
+<div class="background"></div>
+<div class="overlay"></div>
+<div class="messages-container" id="messagesContainer"></div>
+
+<!-- YouTube oculto -->
+<div style="position:absolute;width:0;height:0;overflow:hidden;">
+    <iframe 
+        id="youtubePlayer"
+        width="0"
+        height="0"
+        src=""
+        frameborder="0"
+        allow="autoplay"
+        allowfullscreen>
+    </iframe>
+</div>
+
+<div class="music-control" onclick="toggleMusic()">
+    <span id="musicIcon">🔊</span>
+</div>
+
+<div class="start-button" id="startButton" onclick="startExperience()">
+    <div class="start-content">
+        <div style="font-size:48px;">🎉</div>
+        <p style="font-size:20px;font-weight:500;">¡Feliz Cumpleaños!</p>
+        <p style="font-size:14px;opacity:.7;">Toca para comenzar</p>
+    </div>
+</div>
+
+<script>
+const messages=[
+{text:"Eres increíble 🤩",position:"pos-1"},
+{text:"Hoy celebramos tu vida 🥳🌟",position:"pos-2"},
+{text:"Gracias por existir 💕",position:"pos-3"},
+{text:"Un año más siendo extraordinaria 🎂🔥",position:"pos-4"},
+{text:"Brilla siempre ✨",position:"pos-5"},
+{text:"Que todos tus sueños se cumplan 🌠",position:"pos-6"},
+{text:"Hoy el mundo sonríe contigo 😄",position:"pos-7"},
+{text:"Feliz cumpleaños 🎉💖",position:"pos-8"}
+];
+
+const container=document.getElementById("messagesContainer");
+let currentSet=0;
+const perSet=4;
+let elements=[];
+
+messages.forEach(msg=>{
+    const div=document.createElement("div");
+    div.className="whatsapp-message "+msg.position;
+    const now=new Date();
+    div.innerHTML=msg.text+"<div class='time'>"+now.getHours()+":"+String(now.getMinutes()).padStart(2,"0")+"</div>";
+    container.appendChild(div);
+    elements.push(div);
+});
+
+function showMessages(){
+    elements.forEach(el=>el.classList.remove("show"));
+    const start=currentSet*perSet;
+    for(let i=0;i<perSet;i++){
+        const index=(start+i)%elements.length;
+        setTimeout(()=>elements[index].classList.add("show"),i*200);
+    }
+    currentSet=(currentSet+1)%Math.ceil(elements.length/perSet);
+}
+
+showMessages();
+setInterval(showMessages,5000);
+
+/* 🎵 Música */
+let musicPlaying=false;
+const videoID="2usSHG_oGXM";
+
+function startExperience(){
+    document.getElementById("startButton").classList.add("hidden");
+    const iframe=document.getElementById("youtubePlayer");
+    iframe.src=`https://www.youtube.com/embed/${videoID}?autoplay=1&loop=1&playlist=${videoID}&controls=0`;
+    musicPlaying=true;
+}
+
+function toggleMusic(){
+    const iframe=document.getElementById("youtubePlayer");
+    const icon=document.getElementById("musicIcon");
+
+    if(musicPlaying){
+        iframe.src="";
+        icon.textContent="🔇";
+        musicPlaying=false;
+    }else{
+        iframe.src=`https://www.youtube.com/embed/${videoID}?autoplay=1&loop=1&playlist=${videoID}&controls=0`;
+        icon.textContent="🔊";
+        musicPlaying=true;
+    }
+}
+</script>
+
+</body>
+</html>
